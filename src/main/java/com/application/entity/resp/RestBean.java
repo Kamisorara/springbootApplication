@@ -4,9 +4,8 @@ import lombok.Data;
 
 //回复格式
 @Data
-public class RestBean {
+public class RestBean<T> {
     private int code;
     private String reason;
-    private String token;
-    private String[] userInfo;
+    private T data;
 }
