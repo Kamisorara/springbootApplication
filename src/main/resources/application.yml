@@ -7,17 +7,15 @@ spring:
       ddl-auto: update
   #配置数据源
   datasource:
-    url: jdbc:mysql://192.168.31.100:3306/test
-    username: root
-    password: MyDifficultPass4@
+    url: jdbc:mysql://xxxx/test
+    username: xxx
+    password: xxxx
     driver-class-name: com.mysql.cj.jdbc.Driver
-  mvc:
-    static-path-pattern: /static/**
   #  #配置mail信息
   mail:
     host: smtp.163.com
-    username: kamisola2020@163.com
-    password: VBWQMVCCRAHOFNDE
+    username: xxxx
+    password: xxxx
     port: 465
     default-encoding: utf-8
     properties:
@@ -31,4 +29,4 @@ spring:
 
   #配置redis
   redis:
-    host: 192.168.234.101
+    host: xxxx
