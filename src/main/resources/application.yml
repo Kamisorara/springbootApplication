@@ -1,21 +1,15 @@
 spring:
-  jpa:
-    #开启SQL语句执行日志信息
-    show-sql: true #打印sql语句
-    hibernate:
-      #配置为自动创建
-      ddl-auto: update
   #配置数据源
   datasource:
-    url: jdbc:mysql://xxxx/test
-    username: xxx
-    password: xxxx
+    url: jdbc:mysql://192.168.31.100:3306/test?characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 你的数据库密码
     driver-class-name: com.mysql.cj.jdbc.Driver
   #  #配置mail信息
   mail:
     host: smtp.163.com
-    username: xxxx
-    password: xxxx
+    username: 你的邮箱
+    password: 你自己申请的码
     port: 465
     default-encoding: utf-8
     properties:
@@ -29,4 +23,13 @@ spring:
 
   #配置redis
   redis:
-    host: xxxx
+    host: 192.168.234.101
+mybatis-plus:
+  global-config:
+    db-config:
+      # id生成策略 auto为数据库自增
+      id-type: auto
+    #关闭驼峰映射  当然了不推荐关闭
+  configuration:
+    # 日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

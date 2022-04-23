@@ -1,33 +1,23 @@
 package com.application.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true) //链式注解
-@Entity
-@Table(name = "users")
+@TableName("tb_users")
 public class Users {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    int id;
-
-    @Column(name = "name")
+    Long id;
     String name;
-
-    @Column(name = "sex")
     String sex;
-
-    @Column(name = "address")
     String address;
-
-    @Column(name = "phone")
     String phone;
-
-    @Column(name = "birth")
     String birth;
 }

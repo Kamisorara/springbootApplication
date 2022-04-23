@@ -1,13 +1,13 @@
 package com.application.controller;
 
 import com.application.entity.Account;
-import com.application.entity.resp.RestBean;
-import com.application.repo.AccountRepository;
+import com.application.mapper.AccountMapper;
 import com.application.service.AccountService;
 import com.application.service.VerifyService;
 import com.application.utils.JWTUtils;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,8 +22,9 @@ import java.util.Map;
 @RequestMapping("/user")
 public class loginController {
 
+
     @Autowired
-    AccountRepository accountRepository;
+    AccountMapper accountMapper;
     @Autowired
     AccountService accountService;
     @Autowired
@@ -39,12 +40,14 @@ public class loginController {
     ) {
         Map<String, Object> map = new HashMap<>();
         try {
-            Account accounts = accountRepository.findAllByUsername(username);
+            QueryWrapper<Account> accountQueryWrapper = new QueryWrapper<>();
+            accountQueryWrapper.eq("user_name", username);
+            Account accounts = accountMapper.selectOne(accountQueryWrapper);
             if (accounts.getPassword().equals(password)) {
                 //登录成功生成token
                 Map<String, String> payload = new HashMap<>();
                 payload.put("userId", String.valueOf(accounts.getId()));
-                payload.put("userName", accounts.getUsername());
+                payload.put("userName", accounts.getUserName());
                 String token = JWTUtils.getToken(payload);
                 map.put("code", 200);
                 map.put("msg", "登录成功！");
@@ -73,10 +76,9 @@ public class loginController {
         try {
             if (verifyService.doVerify(email, verify) && password.equals(passwordRepeat)) {
                 Account account = new Account();
-                RestBean restBean = new RestBean();
-                account.setUsername(username);
+                account.setUserName(username);
                 account.setPassword(password);
-                accountRepository.save(account);
+                accountMapper.insert(account);
                 map.put("code", 200);
                 map.put("msg", email + "用户" + "注册成功！");
                 return map;
