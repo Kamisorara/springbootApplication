@@ -1,24 +1,17 @@
 package com.application.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.experimental.Accessors;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Data
-
-@Entity
-@Table(name = "account")
-
+@NoArgsConstructor
+@AllArgsConstructor
+@TableName("tb_account")
 public class Account {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    int id;
-
-    @Column(name = "username")
-    String username;
-
-    @Column(name = "password")
+    Long id;
+    String userName;
     String password;
 }

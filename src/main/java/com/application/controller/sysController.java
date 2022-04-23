@@ -1,8 +1,10 @@
 package com.application.controller;
 
+import com.application.entity.Account;
 import com.application.entity.Users;
-import com.application.repo.AccountRepository;
-import com.application.repo.UserRepository;
+import com.application.mapper.AccountMapper;
+import com.application.mapper.UserMapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,11 +18,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/system")
 public class sysController {
-    @Autowired
-    AccountRepository accountRepository;
 
     @Autowired
-    UserRepository userRepository;
+    AccountMapper accountMapper;
+
+    @Autowired
+    UserMapper userMapper;
 
     /**
      * 修改密码
@@ -29,7 +32,10 @@ public class sysController {
     public Map<String, Object> resetPassword(@RequestParam("userName") String userName,
                                              @RequestParam("password") String password) {
         Map<String, Object> map = new HashMap<>();
-        int i = accountRepository.updatePasswordByUserName(userName, password);
+        UpdateWrapper<Account> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("user_name", userName);
+        updateWrapper.set("password", password);
+        int i = accountMapper.update(null, updateWrapper);
         if (i > 0) {
             map.put("code", 200);
             map.put("msg", "修改成功!");
@@ -46,7 +52,7 @@ public class sysController {
     @RequestMapping("/userMessage")
     public Map<String, Object> getUserMessage() {
         Map<String, Object> map = new HashMap<>();
-        List<Users> users = userRepository.findAll();
+        List<Users> users = userMapper.selectList(null);
         map.put("code", 200);  //前端中因为自己台添加了axios拦截器，所以一定要返回数值，不然会直接拦截
         map.put("data", users);
         return map;
@@ -64,7 +70,7 @@ public class sysController {
         Map<String, Object> map = new HashMap<>();
         Users user = new Users();
         user.setName(name).setAddress(address).setBirth(birth).setPhone(phone).setSex(sex);
-        userRepository.save(user);
+        userMapper.insert(user);
         map.put("code", 200);
         map.put("msg", "添加成功!");
         return map;
@@ -76,7 +82,7 @@ public class sysController {
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     public Map<String, Object> delete(@RequestParam("id") int id) {
         Map<String, Object> map = new HashMap<>();
-        userRepository.deleteById(id);
+        userMapper.deleteById(id);
         map.put("code", 200);
         map.put("msg", "删除成功");
         return map;
